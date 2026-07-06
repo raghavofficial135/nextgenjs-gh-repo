@@ -26,8 +26,7 @@ jobs:
         uses: google-github-actions/auth@v2
 
         with:
-          token-format: access_token
-
+          token-format: 'access_token'
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: sa-nextgenjs-cicd@${{secrets.GCP_PROJECT_ID}}.iam.gserviceaccount.com
 
