@@ -26,18 +26,18 @@ jobs:
         uses: google-github-actions/auth@v2
 
         with:
-          token-format: 'access_token'
+          token_format: 'access_token'
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: sa-nextgenjs-cicd@${{secrets.GCP_PROJECT_ID}}.iam.gserviceaccount.com
+          service_account: sa-nextgenjs-cicd@${{secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com
 
       - name: Docker Auth
         run: |
-          echo '${{ steps.auth.outputs.access_token}}' | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
+          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
 
       - name: Build and Push container
         run: |
-          docker-build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID}}/nextjs-repo/app:${{ github.sha}} .
+          docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/nextjs-repo/app:${{ github.sha}} .
 
-          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID}}/nextjs-repo/app:${{ github.sha}}
+          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/nextjs-repo/app:${{ github.sha}}
 
 
