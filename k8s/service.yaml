@@ -1,0 +1,16 @@
+apiVersion: v1
+
+kind: Service
+metadata:
+  name: nextgen-app-service
+  labels:
+    app: nextgen-app
+
+spec:
+  selector:
+    app: nextgen-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer

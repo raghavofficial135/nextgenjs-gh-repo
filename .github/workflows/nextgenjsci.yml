@@ -39,5 +39,21 @@ jobs:
           docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/nextjs-repo/app:${{ github.sha}} .
 
           docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/nextjs-repo/app:${{ github.sha}}
+      # CD pipeline to deploy the container to GKE
+      - name: Set up GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: nextgenjs-gke-cluster
+          location: us-central1
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to GKE
+        run: |
+          sed -i "s|IMAGE_PLACEHOLDER|us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/nextjs-repo/app:${{ github.sha}}|g" k8s/deployment.yaml
+
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl rollout status deployment/nextgen-app
+
 
 

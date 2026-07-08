@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: nextgen-app
+  labels:
+    app: nextgen-app
+
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: nextgen-app
+    template:
+      metadata:
+        labels:
+          app: nextgen-app
+      spec:
+        containers:
+          - name: nextgen-app
+            image: IMAGE_PLACEHOLDER
+            ports:
+              - containerPort: 3000
+
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "250m"
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
